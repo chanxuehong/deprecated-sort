@@ -1,10 +1,10 @@
-package sort
+package counting
 
-func CountingSort(arr []int) {
+func Ints(arr []int) {
 	if len(arr) < 2 {
 		return
 	}
-	min, max := getMinMax(arr)
+	min, max := getIntsMinMax(arr)
 	count := make([]int, max-min+1)
 	for _, v := range arr {
 		count[v-min]++
@@ -20,7 +20,7 @@ func CountingSort(arr []int) {
 	}
 }
 
-func getMinMax(arr []int) (min, max int) {
+func getIntsMinMax(arr []int) (min, max int) {
 	min, max = arr[0], arr[0]
 	for _, v := range arr {
 		switch {

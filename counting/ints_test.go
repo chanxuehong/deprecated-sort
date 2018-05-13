@@ -1,4 +1,4 @@
-package sort
+package counting
 
 import (
 	"math/rand"
@@ -6,19 +6,19 @@ import (
 	"testing"
 )
 
-func TestCountingSort(t *testing.T) {
+func TestInts(t *testing.T) {
 	arr := make([]int, 10000) // [-100,100)
 	for i := range arr {
 		arr[i] = rand.Intn(200) - 100
 	}
-	CountingSort(arr)
+	Ints(arr)
 	if !sort.IntsAreSorted(arr) {
-		t.Error("function CountingSort did not work correctly")
+		t.Error("function Ints did not work correctly")
 		return
 	}
 }
 
-func TestGetMinMax(t *testing.T) {
+func TestGetIntsMinMax(t *testing.T) {
 	tests := []struct {
 		arr []int
 		min int
@@ -61,7 +61,7 @@ func TestGetMinMax(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		min, max := getMinMax(test.arr)
+		min, max := getIntsMinMax(test.arr)
 		if min != test.min || max != test.max {
 			t.Errorf("arr=%v, want=(%d, %d), have=(%d, %d)", test.arr, test.min, test.max, min, max)
 			return
@@ -69,7 +69,7 @@ func TestGetMinMax(t *testing.T) {
 	}
 }
 
-func BenchmarkCountingSort(b *testing.B) {
+func BenchmarkInts(b *testing.B) {
 	arr := make([]int, 1e6)
 	for i := range arr {
 		arr[i] = rand.Intn(2400)
@@ -77,6 +77,6 @@ func BenchmarkCountingSort(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		CountingSort(arr)
+		Ints(arr)
 	}
 }
