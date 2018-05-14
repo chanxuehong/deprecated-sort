@@ -16,8 +16,14 @@ func (p intSlice) CopyElement(dst Interface, dstIndex int, srcIndex int) {
 
 func TestSort(t *testing.T) {
 	arr := make([]int, 10000) // [-100,100)
-	for i := range arr {
-		arr[i] = rand.Intn(200) - 100
+	for {
+		for i := range arr {
+			arr[i] = rand.Intn(200) - 100
+		}
+		if sort.IntsAreSorted(arr) {
+			continue
+		}
+		break
 	}
 	dst := make([]int, 10000)
 	Sort(intSlice(dst), intSlice(arr))

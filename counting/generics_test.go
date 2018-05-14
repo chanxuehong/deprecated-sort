@@ -16,8 +16,14 @@ func (p elementSlice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 
 func TestGenericsSort(t *testing.T) {
 	arr := make(elementSlice, 10000) // [-100,100)
-	for i := range arr {
-		arr[i].ComparedField = rand.Intn(200) - 100
+	for {
+		for i := range arr {
+			arr[i].ComparedField = rand.Intn(200) - 100
+		}
+		if sort.IsSorted(arr) {
+			continue
+		}
+		break
 	}
 	dst := make(elementSlice, 10000)
 	genericsSort(dst, arr)

@@ -8,13 +8,31 @@ import (
 
 func TestInts(t *testing.T) {
 	arr := make([]int, 10000) // [-100,100)
-	for i := range arr {
-		arr[i] = rand.Intn(200) - 100
+	for {
+		for i := range arr {
+			arr[i] = rand.Intn(200) - 100
+		}
+		if sort.IntsAreSorted(arr) {
+			continue
+		}
+		break
 	}
 	Ints(arr)
 	if !sort.IntsAreSorted(arr) {
 		t.Error("function Ints did not work correctly")
 		return
+	}
+}
+
+func BenchmarkInts(b *testing.B) {
+	arr := make([]int, 1e6)
+	for i := range arr {
+		arr[i] = rand.Intn(2400)
+	}
+	b.ReportAllocs()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		Ints(arr)
 	}
 }
 
@@ -66,17 +84,5 @@ func TestGetIntsMinMax(t *testing.T) {
 			t.Errorf("arr=%v, want=(%d, %d), have=(%d, %d)", test.arr, test.min, test.max, min, max)
 			return
 		}
-	}
-}
-
-func BenchmarkInts(b *testing.B) {
-	arr := make([]int, 1e6)
-	for i := range arr {
-		arr[i] = rand.Intn(2400)
-	}
-	b.ReportAllocs()
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		Ints(arr)
 	}
 }
