@@ -10,12 +10,12 @@ func Ints(arr []int) {
 		count[v-min]++
 	}
 	var j int
-	for i := range count {
+	for i, c := range count {
 		v := i + min
-		for count[i] > 0 {
+		for c > 0 {
 			arr[j] = v
 			j++
-			count[i]--
+			c--
 		}
 	}
 }
