@@ -26,14 +26,15 @@ func Sort(dst, src Interface) {
 	for i := 0; i < srcLen; i++ {
 		count[src.ComparedField(i)-min]++
 	}
-	for i := 1; i < len(count); i++ {
-		count[i] += count[i-1]
+	total := 0
+	for i, c := range count {
+		count[i] = total
+		total += c
 	}
-	for i := srcLen - 1; i >= 0; i-- {
-		countIndex := src.ComparedField(i) - min
-		dstIndex := count[countIndex] - 1
-		src.CopyElement(dst, dstIndex, i)
-		count[countIndex]--
+	for i := 0; i < srcLen; i++ {
+		countKey := src.ComparedField(i) - min
+		src.CopyElement(dst, count[countKey], i)
+		count[countKey]++
 	}
 }
 

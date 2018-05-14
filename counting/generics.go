@@ -26,15 +26,15 @@ func genericsSort(dst, src []element) {
 	for _, v := range src {
 		count[v.ComparedField-min]++
 	}
-	for i := 1; i < len(count); i++ {
-		count[i] += count[i-1]
+	total := 0
+	for i, c := range count {
+		count[i] = total
+		total += c
 	}
-	for i := len(src) - 1; i >= 0; i-- {
-		v := src[i]
-		countIndex := v.ComparedField - min
-		dstIndex := count[countIndex] - 1
-		dst[dstIndex] = v
-		count[countIndex]--
+	for _, v := range src {
+		countKey := v.ComparedField - min
+		dst[count[countKey]] = v
+		count[countKey]++
 	}
 }
 

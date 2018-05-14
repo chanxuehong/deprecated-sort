@@ -9,7 +9,7 @@ func Ints(arr []int) {
 	for _, v := range arr {
 		count[v-min]++
 	}
-	var j int
+	j := 0
 	for i, c := range count {
 		v := i + min
 		for c > 0 {
