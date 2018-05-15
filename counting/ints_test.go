@@ -17,7 +17,7 @@ func TestInts(t *testing.T) {
 		}
 		break
 	}
-	Ints(arr)
+	Ints(arr, nil)
 	if !sort.IntsAreSorted(arr) {
 		t.Error("function Ints did not work correctly")
 		return
@@ -32,11 +32,11 @@ func BenchmarkInts(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		Ints(arr)
+		Ints(arr, nil)
 	}
 }
 
-func TestGetIntsMinMax(t *testing.T) {
+func TestGetIntsRange(t *testing.T) {
 	tests := []struct {
 		arr []int
 		min int
@@ -79,7 +79,7 @@ func TestGetIntsMinMax(t *testing.T) {
 		},
 	}
 	for _, test := range tests {
-		min, max := getIntsMinMax(test.arr)
+		min, max := getIntsRange(test.arr)
 		if min != test.min || max != test.max {
 			t.Errorf("arr=%v, want=(%d, %d), have=(%d, %d)", test.arr, test.min, test.max, min, max)
 			return

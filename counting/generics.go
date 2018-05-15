@@ -7,7 +7,7 @@ type element struct {
 	Others        [1]byte
 }
 
-func genericsSort(dst, src []element) {
+func genericsSort(dst, src []element, rng *Range) {
 	if len(dst) < len(src) {
 		panic("len(dst) < len(src)")
 	}
@@ -21,7 +21,12 @@ func genericsSort(dst, src []element) {
 		dst[0] = src[0]
 		return
 	}
-	min, max := getGenericsMinMax(src)
+	var min, max int
+	if rng == nil {
+		min, max = getGenericsRange(src)
+	} else {
+		min, max = rng.Min, rng.Max
+	}
 	count := make([]int, max-min+1)
 	for _, v := range src {
 		count[v.ComparedField-min]++
@@ -38,7 +43,7 @@ func genericsSort(dst, src []element) {
 	}
 }
 
-func getGenericsMinMax(arr []element) (min, max int) {
+func getGenericsRange(arr []element) (min, max int) {
 	min, max = arr[0].ComparedField, arr[0].ComparedField
 	for _, v := range arr {
 		switch n := v.ComparedField; {

@@ -26,7 +26,7 @@ func TestGenericsSort(t *testing.T) {
 		break
 	}
 	dst := make(elementSlice, 10000)
-	genericsSort(dst, arr)
+	genericsSort(dst, arr, nil)
 	if !sort.IsSorted(dst) {
 		t.Error("function genericsSort did not work correctly")
 		return
@@ -42,6 +42,6 @@ func BenchmarkGenericsSort(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		genericsSort(dst, arr)
+		genericsSort(dst, arr, nil)
 	}
 }

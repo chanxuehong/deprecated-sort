@@ -3,42 +3,47 @@ package counting
 type Interface interface {
 	Len() int
 	ComparedField(index int) int
-	CopyElement(dst Interface, dstIndex int, srcIndex int)
 }
 
-func Sort(dst, src Interface) {
-	srcLen := src.Len()
-	if dst.Len() < srcLen {
-		panic("dst.Len() < src.Len()")
+type Range struct {
+	Min, Max int
+}
+
+func Sort(data Interface, copyElement func(dstIndex, srcIndex int), rng *Range) {
+	dataLen := data.Len()
+	if dataLen < 0 {
+		panic("data.Len() < 0")
 	}
-	if srcLen < 0 {
-		panic("src.Len() < 0")
-	}
-	if srcLen == 0 {
+	if dataLen == 0 {
 		return
 	}
-	if srcLen == 1 {
-		src.CopyElement(dst, 0, 0)
+	if dataLen == 1 {
+		copyElement(0, 0)
 		return
 	}
-	min, max := getMinMax(src)
+	var min, max int
+	if rng == nil {
+		min, max = getRange(data)
+	} else {
+		min, max = rng.Min, rng.Max
+	}
 	count := make([]int, max-min+1)
-	for i := 0; i < srcLen; i++ {
-		count[src.ComparedField(i)-min]++
+	for i := 0; i < dataLen; i++ {
+		count[data.ComparedField(i)-min]++
 	}
 	total := 0
 	for i, c := range count {
 		count[i] = total
 		total += c
 	}
-	for i := 0; i < srcLen; i++ {
-		countKey := src.ComparedField(i) - min
-		src.CopyElement(dst, count[countKey], i)
+	for i := 0; i < dataLen; i++ {
+		countKey := data.ComparedField(i) - min
+		copyElement(count[countKey], i)
 		count[countKey]++
 	}
 }
 
-func getMinMax(data Interface) (min, max int) {
+func getRange(data Interface) (min, max int) {
 	min = data.ComparedField(0)
 	max = min
 	for i, l := 1, data.Len(); i < l; i++ {
